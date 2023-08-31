@@ -12,13 +12,7 @@ function PersonTile({ person }) {
                 className='w-full'
               />
             ) : (
-              <img
-                src={
-                  'https://static.vecteezy.com/system/resources/previews/004/141/669/non_2x/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg'
-                }
-                alt=''
-                className='w-full'
-              />
+              <img src={'/unknown_person.png'} alt='' className='w-full' />
             )}
           </div>
           <div className='flex flex-col pl-3 w-3/5'>

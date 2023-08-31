@@ -1,22 +1,21 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import PersonCard from './PersonCard';
-import './MovieDetails.css';
 import { Link } from 'react-router-dom';
 import { Rating } from '@mui/material';
+import HorizontalList from './HorizontalList';
 
 function MovieDetails() {
   const [movie, setMovie] = useState(null);
   const [cast, setCast] = useState([]);
   const [isFound, setIsFound] = useState();
   const [isLoaded, setIsLoaded] = useState(false);
-  const [category, setCategory] = useState('movie');
   const { id } = useParams();
 
   useEffect(() => {
     getMovieDetails(id);
     getMovieCredits(id);
-  }, [isFound, isLoaded]);
+  }, []);
 
   async function getMovieDetails(id) {
     try {
@@ -95,11 +94,7 @@ function MovieDetails() {
                   <span className='font-medium text-lg'>
                     {movie?.production_companies[0]?.name}
                   </span>
-                  <Rating
-                    name='half-rating'
-                    defaultValue={movie?.vote_average / 2}
-                    precision={0.2}
-                  />
+                  <Rating defaultValue={movie?.vote_average / 2} precision={0.2} readOnly />
                 </div>
                 <div>
                   <span> {movie?.release_date}</span>{' '}
@@ -121,18 +116,11 @@ function MovieDetails() {
               </div>
             </div>
             <span className='text-xl text-slate-100 font-medium'>Top paid cast</span>
-
-            <div className='w-full md:w-3/5'>
-              <div className=''>
-                <div className='flex overflow-x-auto items-start space-x-8 custom-scrollbar -z-10'>
-                  {cast?.map((person, key) => (
-                    <div key={key}>
-                      <PersonCard person={person}></PersonCard>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
+            <HorizontalList
+              width={'3/5'}
+              items={cast}
+              renderItem={(person) => <PersonCard person={person} />}
+            />
           </div>
         </div>
       </>

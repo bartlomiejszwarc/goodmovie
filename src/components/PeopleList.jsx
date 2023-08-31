@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
-import { SentimentSatisfiedRounded } from '@mui/icons-material';
 
 function PeopleList({ input }) {
   const [people, setPeople] = useState([]);
@@ -17,7 +16,6 @@ function PeopleList({ input }) {
     if (input !== undefined && input !== '') {
       setIsLoading(true);
       getPersonByName(input, pageNumber);
-      console.log(isLoading);
       if (people?.length === 0) {
         setMessage('Nothing has been found');
       }

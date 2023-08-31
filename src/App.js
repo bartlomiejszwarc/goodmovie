@@ -6,6 +6,7 @@ import ReactDOM from 'react-dom';
 import { Route, Routes } from 'react-router-dom';
 import Search from './components/Search';
 import Navbar from './components/Navbar';
+import WelcomePage from './components/WelcomePage';
 
 function App() {
   return (
@@ -13,7 +14,7 @@ function App() {
       <div className='page-background'></div>
       <Navbar></Navbar>
       <Routes>
-        <Route path='/' element={<Search />}></Route>
+        <Route path='/' element={<WelcomePage />}></Route>
         <Route path='/search' element={<Search />}></Route>
         <Route path='/movie/details/:id' element={<MovieDetails />}></Route>
         <Route path='/tv/details/:id' element={<TvSeriesDetails />}></Route>

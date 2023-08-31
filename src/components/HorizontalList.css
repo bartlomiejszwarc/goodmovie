@@ -1,0 +1,15 @@
+.custom-shade {
+  mask-image: linear-gradient(to right, black calc(100% - 50px), transparent 100%);
+}
+.custom-list-scrollbar::-webkit-scrollbar {
+  height: 7px;
+}
+
+.custom-list-scrollbar::-webkit-scrollbar-track {
+  background-color: rgb(37, 37, 37);
+}
+
+.custom-list-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #dddddd72;
+  border-radius: 100px;
+}

@@ -1,6 +1,7 @@
 .page-container {
   position: relative;
-  overflow: hidden;
+  overflow-y: scroll;
+  overflow-x: hidden !important;
   width: 100vw;
   min-height: 100vh;
 }

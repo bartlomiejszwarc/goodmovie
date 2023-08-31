@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import PersonCard from './PersonCard';
-import './MovieDetails.css';
 import { Link } from 'react-router-dom';
 import { Rating } from '@mui/material';
+import HorizontalList from './HorizontalList';
 
 function TvSeriesDetails() {
   const [series, setSeries] = useState(null);
@@ -105,11 +105,7 @@ function TvSeriesDetails() {
                   <span className='font-medium text-lg'>
                     {series?.production_companies[0]?.name}
                   </span>
-                  <Rating
-                    name='half-rating'
-                    defaultValue={series?.vote_average / 2}
-                    precision={0.2}
-                  />
+                  <Rating defaultValue={series?.vote_average / 2} precision={0.2} readOnly />
                 </div>
                 <div className='flex flex-col'>
                   <span className='font-medium'>
@@ -139,17 +135,11 @@ function TvSeriesDetails() {
             </div>
             <span className='text-xl text-slate-100 font-medium'>Top paid cast</span>
 
-            <div className='w-full md:w-3/5'>
-              <div className=''>
-                <div className='flex overflow-x-auto items-start space-x-8 custom-scrollbar -z-10'>
-                  {cast?.map((castMember, key) => (
-                    <div key={key}>
-                      <PersonCard person={castMember}></PersonCard>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
+            <HorizontalList
+              width={'3/5'}
+              items={cast}
+              renderItem={(person) => <PersonCard person={person} />}
+            />
           </div>
         </div>
       </>

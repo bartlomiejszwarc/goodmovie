@@ -11,11 +11,7 @@ function PersonCard({ person }) {
               className='rounded-sm w-full'
             />
           ) : (
-            <img
-              src={'https://upload.wikimedia.org/wikipedia/commons/b/bc/Unknown_person.jpg'}
-              alt='Person photo'
-              className='rounded-sm w-full'
-            />
+            <img src={'/unknown_person.png'} alt='Person photo' className='rounded-sm w-full' />
           )}
           <span className='text-slate-100 text-lg font-thin '>{person?.name}</span>
           <span className='text-slate-400 font-base font-thin '>{person?.character}</span>

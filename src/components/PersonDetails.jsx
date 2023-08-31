@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import MovieCard from './MovieCard';
+import HorizontalList from './HorizontalList';
+import { MoreVert } from '@mui/icons-material';
 function PersonDetails() {
   const { id } = useParams();
   const [person, setPerson] = useState();
@@ -81,13 +83,7 @@ function PersonDetails() {
                   className='w-60'
                 />
               ) : (
-                <img
-                  src={
-                    'https://static.vecteezy.com/system/resources/previews/004/141/669/non_2x/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg'
-                  }
-                  alt=''
-                  className='w-full'
-                />
+                <img src={'/unknown_person.png'} alt='' className='w-full' />
               )}
               <div className='flex flex-col pb-4'>
                 <span className='font-medium text-slate-100 text-3xl'>{person?.name}</span>
@@ -127,13 +123,12 @@ function PersonDetails() {
               </div>
               <div className='w-full space-y-2'>
                 <span className='text-xl text-slate-100 font-medium'>Known for </span>
-                <div className='flex overflow-x-auto items-start space-x-8 custom-scrollbar -z-10'>
-                  {personCredits?.map((credit, key) => (
-                    <div key={key}>
-                      <MovieCard movie={credit}></MovieCard>
-                    </div>
-                  ))}
-                </div>
+
+                <HorizontalList
+                  items={personCredits}
+                  width={'full'}
+                  renderItem={(movie) => <MovieCard movie={movie} />}
+                />
               </div>
             </div>
           </div>

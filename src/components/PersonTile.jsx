@@ -3,16 +3,16 @@ function PersonTile({ person }) {
   return (
     <>
       <Link to={`/person/details/${person?.id}`}>
-        <div className='flex flex-row w-auto md:w-[40rem] '>
+        <div className='flex flex-row md:w-[40rem]'>
           <div className='w-2/5'>
             {person?.profile_path ? (
               <img
-                src={'https://image.tmdb.org/t/p/original/' + person?.profile_path}
+                src={'https://image.tmdb.org/t/p/w300/' + person?.profile_path}
                 alt=''
-                className='w-full'
+                className='w-96'
               />
             ) : (
-              <img src={'/unknown_person.png'} alt='' className='w-full' />
+              <img src={'/unknown_person.png'} alt='' className='w-96' />
             )}
           </div>
           <div className='flex flex-col pl-3 w-3/5'>

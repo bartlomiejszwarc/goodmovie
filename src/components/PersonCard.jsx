@@ -6,7 +6,7 @@ function PersonCard({ person }) {
         <div className=' rounded-lg w-36 flex flex-col items-start pb-4'>
           {person?.profile_path ? (
             <img
-              src={'https://image.tmdb.org/t/p/original/' + person?.profile_path}
+              src={'https://image.tmdb.org/t/p/w300/' + person?.profile_path}
               alt='Person photo'
               className='rounded-sm w-full'
             />

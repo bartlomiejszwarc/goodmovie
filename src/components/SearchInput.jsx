@@ -83,7 +83,7 @@ function SearchInput({ input, category }) {
               />
               <FormControlLabel
                 className='text-slate-200 px-2'
-                value='series'
+                value='tv'
                 control={
                   <Radio
                     sx={{

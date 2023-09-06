@@ -82,7 +82,7 @@ function MovieDetails() {
             <div className=' flex flex-col md:flex-row justify-center'>
               <div className=''>
                 <img
-                  src={'https://image.tmdb.org/t/p/original/' + movie?.poster_path}
+                  src={'https://image.tmdb.org/t/p/w400/' + movie?.poster_path}
                   alt=''
                   className='w-72 md:w-64 shadow-2xl pt-4'
                 />
@@ -94,7 +94,7 @@ function MovieDetails() {
                   <span className='font-medium text-lg'>
                     {movie?.production_companies[0]?.name}
                   </span>
-                  <Rating defaultValue={movie?.vote_average / 2} precision={0.2} readOnly />
+                  <Rating defaultValue={movie?.vote_average / 2} precision={0.1} readOnly />
                 </div>
                 <div>
                   <span> {movie?.release_date}</span>{' '}

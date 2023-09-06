@@ -9,6 +9,7 @@ function MoviesList({ input, category }) {
   const [isLoading, setIsLoading] = useState();
   const [pageNumber, setPageNumber] = useState(1);
   const [message, setMessage] = useState('');
+  const [sortValue, setSortValue] = useState('popularity');
 
   useEffect(() => {
     setMovies([]);
@@ -16,11 +17,11 @@ function MoviesList({ input, category }) {
     if (input !== undefined && input !== '') {
       if (category === 'movie') {
         setIsLoading(true);
-        getMoviesByKeyword(input, 1);
+        getMoviesByKeyword(input, 1, sortValue);
       }
-      if (category === 'series') {
+      if (category === 'tv') {
         setIsLoading(true);
-        getSeriesByKeyword(input, 1);
+        getSeriesByKeyword(input, 1, sortValue);
       }
       if (movies.length === 0) {
         setMessage('Nothing has been found');
@@ -29,14 +30,36 @@ function MoviesList({ input, category }) {
   }, [input, category]);
 
   useEffect(() => {
+    sortItemsByValue(sortValue);
+  }, [sortValue]);
+
+  useEffect(() => {
+    setSortValue('popularity');
+  }, [category]);
+
+  useEffect(() => {
     if (pageNumber > 1) {
       if (category === 'movie') {
         getMoviesByKeyword(input, pageNumber);
-      } else if (category === 'series') {
+      } else if (category === 'tv') {
         getSeriesByKeyword(input, pageNumber);
       }
     }
   }, [pageNumber]);
+
+  function sortItemsByValue(sortByValue) {
+    let sortedResults = [...movies];
+    if (sortByValue === 'release_date') {
+      sortedResults = sortedResults.sort((a, b) => {
+        const dateA = a[sortByValue] ? new Date(a[sortByValue]) : null;
+        const dateB = b[sortByValue] ? new Date(b[sortByValue]) : null;
+        return dateB - dateA;
+      });
+    } else {
+      sortedResults = sortedResults.sort((a, b) => b[sortByValue] - a[sortByValue]);
+    }
+    setMovies(sortedResults);
+  }
 
   async function getMoviesByKeyword(keyword, page) {
     try {
@@ -53,7 +76,9 @@ function MoviesList({ input, category }) {
       )
         .then((response) => response.json())
         .then((response) => {
-          const sortedResults = response.results.sort((a, b) => b.popularity - a.popularity);
+          let sortedResults = [...response.results];
+          sortedResults = sortedResults.sort((a, b) => b[sortValue] - a[sortValue]);
+
           setMovies((movies) => [...movies, ...sortedResults]);
           setIsLoading(false);
         })
@@ -79,7 +104,13 @@ function MoviesList({ input, category }) {
       )
         .then((response) => response.json())
         .then((response) => {
-          const sortedResults = response.results.sort((a, b) => b.popularity - a.popularity);
+          let sortedResults = [...response.results];
+          sortedResults = sortedResults.map((result) => {
+            result.release_date = result.first_air_date;
+            return result;
+          });
+          sortedResults = sortedResults.sort((a, b) => b[sortValue] - a[sortValue]);
+
           setMovies((series) => [...series, ...sortedResults]);
           setIsLoading(false);
         })
@@ -90,6 +121,7 @@ function MoviesList({ input, category }) {
   }
 
   function loadMoreData() {
+    //not sorted
     setPageNumber((pageNumber) => pageNumber + 1);
   }
 
@@ -97,6 +129,34 @@ function MoviesList({ input, category }) {
     <>
       {movies?.length > 0 && !isLoading ? (
         <>
+          <div className='w-full md:w-1/2 flex flex-row space-x-3 px-2 md:px-0 md:space-x-4 items-center justify-center md:justify-end text-slate-200 font-thin py-4'>
+            <span className=''>Sort by </span>
+
+            <span
+              onClick={() => setSortValue('popularity')}
+              className={`cursor-pointer ${
+                sortValue === 'popularity' ? 'font-bold border-b-[1px]' : 'font-thin'
+              }`}
+            >
+              Popularity{' '}
+            </span>
+            <span
+              onClick={() => setSortValue('release_date')}
+              className={`cursor-pointer ${
+                sortValue === 'release_date' ? 'font-bold border-b-[1px]' : 'font-thin'
+              }`}
+            >
+              Release date{' '}
+            </span>
+            <span
+              onClick={() => setSortValue('vote_average')}
+              className={`cursor-pointer ${
+                sortValue === 'vote_average' ? 'font-bold border-b-[1px]' : 'font-thin'
+              }`}
+            >
+              Rating{' '}
+            </span>
+          </div>
           <div className='flex flex-col w-full items-center px-3 space-y-12'>
             {movies.map((movie, key) => (
               <div key={key}>

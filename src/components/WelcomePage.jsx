@@ -7,6 +7,7 @@ function WelcomePage() {
   const [popularMovies, setPopularMovies] = useState();
   const [upcomingMovies, setUpcomingMovies] = useState();
   const [topRatedMovies, setTopRatedMovies] = useState();
+  const [popularTvSeries, setPopularTvSeries] = useState();
   const [isLoading, setIsLoading] = useState();
   const [isLoaded, setIsLoaded] = useState(false);
   useEffect(() => {
@@ -14,6 +15,7 @@ function WelcomePage() {
     getTrendingMovies();
     getUpcomingMovies();
     getTopRatedMovies();
+    getTrendingTvSeries();
   }, []);
   async function getTrendingMovies() {
     try {
@@ -44,7 +46,7 @@ function WelcomePage() {
           Authorization: process.env.REACT_APP_API_KEY,
         },
       };
-      fetch(`https://api.themoviedb.org/3/movie/upcoming`, options)
+      fetch('https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=1&region=PL', options)
         .then((response) => response.json())
         .then((response) => {
           setUpcomingMovies(response.results);
@@ -77,15 +79,42 @@ function WelcomePage() {
       console.log(e);
     }
   }
+  async function getTrendingTvSeries() {
+    try {
+      const options = {
+        method: 'GET',
+        headers: {
+          accept: 'application/json',
+          Authorization: process.env.REACT_APP_API_KEY,
+        },
+      };
+      fetch(`https://api.themoviedb.org/3/tv/top_rated`, options)
+        .then((response) => response.json())
+        .then((response) => {
+          setPopularTvSeries(response.results);
+          setIsLoading(false);
+          setIsLoaded(true);
+        })
+
+        .catch((err) => console.error(err));
+    } catch (e) {
+      console.log(e);
+    }
+  }
   return (
     <>
       {!isLoading && isLoaded ? (
         <>
-          <CarouselList items={popularMovies} label={'Popular movies'} />
-          <CarouselList items={upcomingMovies} label={'Upcoming'} />
-          <CarouselList items={topRatedMovies} label={'Top rated movies of all time'} />
+          <CarouselList items={popularMovies} label={'Popular movies'} category={'movie'} />
+          <CarouselList items={upcomingMovies} label={'Upcoming movies'} category={'movie'} />
+          <CarouselList
+            items={topRatedMovies}
+            label={'Top rated movies of all time'}
+            category={'movie'}
+          />
+          <CarouselList items={popularTvSeries} label={'Top rated TV Shows'} category={'tv'} />
         </>
-      ) : !isLoaded ? (
+      ) : isLoading && !isLoaded ? (
         <Box sx={{ display: 'flex' }}>
           <CircularProgress size={80} style={{ color: '#0c4a6e' }} />
         </Box>

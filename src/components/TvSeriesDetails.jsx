@@ -4,9 +4,10 @@ import PersonCard from './PersonCard';
 import { Link } from 'react-router-dom';
 import { Rating } from '@mui/material';
 import HorizontalList from './HorizontalList';
-
+import TvSeriesSeasons from './TvSeriesSeasons';
 function TvSeriesDetails() {
   const [series, setSeries] = useState(null);
+  const [seriesProviders, setSeriesProviders] = useState(null);
   const [cast, setCast] = useState([]);
   const [isFound, setIsFound] = useState();
   const [isLoaded, setIsLoaded] = useState(false);
@@ -15,7 +16,30 @@ function TvSeriesDetails() {
   useEffect(() => {
     getSeriesDetails(id);
     getSeriesCredits(id);
+    getSeriesProviders(id, 'PL');
   }, [isFound, isLoaded]);
+
+  async function getSeriesProviders(id, region) {
+    try {
+      const options = {
+        method: 'GET',
+        headers: {
+          accept: 'application/json',
+          Authorization: process.env.REACT_APP_API_KEY,
+        },
+      };
+      fetch(`https://api.themoviedb.org/3/tv/${id}/watch/providers`, options)
+        .then((response) => response.json())
+        .then((response) => {
+          setSeriesProviders(response?.results[`${region}`]?.flatrate);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
   async function getSeriesDetails(id) {
     try {
@@ -105,7 +129,7 @@ function TvSeriesDetails() {
                   <span className='font-medium text-lg'>
                     {series?.production_companies[0]?.name}
                   </span>
-                  <Rating defaultValue={series?.vote_average / 2} precision={0.2} readOnly />
+                  <Rating defaultValue={series?.vote_average / 2} precision={0.1} readOnly />
                 </div>
                 <div className='flex flex-col'>
                   <span className='font-medium'>
@@ -119,7 +143,18 @@ function TvSeriesDetails() {
                   <span>{series?.number_of_episodes} episodes &bull;</span>
                   <span>{series?.number_of_seasons} seasons</span>
                 </div>
-
+                <div className='flex flex-col space-y-1'>
+                  <span className='text-lg font-medium'>Where to watch</span>
+                  <div className='flex flex-row space-x-4'>
+                    {seriesProviders?.map((provider, key) => (
+                      <img
+                        src={'https://image.tmdb.org/t/p/w92/' + provider?.logo_path}
+                        className='w-8 md:w-10 rounded-md'
+                        key={key}
+                      />
+                    ))}
+                  </div>
+                </div>
                 <div className='flex md:flex-row space-x-3 '>
                   {series?.genres?.map((genre, key) => (
                     <div
@@ -139,6 +174,10 @@ function TvSeriesDetails() {
               width={'3/5'}
               items={cast}
               renderItem={(person) => <PersonCard person={person} />}
+            />
+            <TvSeriesSeasons
+              series={series}
+              seasons={series?.seasons?.slice(1, series?.seasons?.length)}
             />
           </div>
         </div>

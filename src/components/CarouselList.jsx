@@ -5,7 +5,7 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import MovieTile from './MovieTile';
 import './CarouselList.css';
 
-function CarouselList({ items, label }) {
+function CarouselList({ items, label, category }) {
   const { scrollContainerRef, handleScroll, scrollTo, isAtStart, isAtEnd } =
     useSmoothHorizontalScroll();
 
@@ -32,6 +32,9 @@ function CarouselList({ items, label }) {
       window.removeEventListener('resize', handleWindowSizeChange);
     };
   }, [scrollSpeed, width]);
+  if (!items) {
+    return null;
+  }
 
   return (
     <>
@@ -42,16 +45,18 @@ function CarouselList({ items, label }) {
         >
           <ArrowBackIosNewIcon className='text-neutral-400' />
         </button>
-        <span className='text-2xl md:text-3xl text-slate-100 pl-8'>{label}</span>
+        <span className='text-2xl md:text-4xl text-slate-100 pl-8 tracking-wide font-bebas'>
+          {label}
+        </span>
         <div
-          className='flex flex-row custom-scrollbar z-10 pt-2 pb-8'
+          className='flex flex-row custom-scrollbar pt-2 pb-8'
           ref={scrollContainerRef}
           onScroll={handleScroll}
           style={{ overflowX: 'scroll' }}
         >
           {items?.map((movie, key) => (
             <div key={key}>
-              <MovieTile movie={movie} category={'movie'} posterOnly={true}></MovieTile>
+              <MovieTile movie={movie} category={category} posterOnly={true}></MovieTile>
             </div>
           ))}
         </div>

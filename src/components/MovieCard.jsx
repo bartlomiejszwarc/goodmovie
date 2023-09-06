@@ -5,7 +5,7 @@ function MovieCard({ movie }) {
       <div className=' rounded-lg w-36 flex flex-col items-start pb-4'>
         {movie?.poster_path ? (
           <img
-            src={'https://image.tmdb.org/t/p/original/' + movie?.poster_path}
+            src={'https://image.tmdb.org/t/p/w400/' + movie?.poster_path}
             alt='Movie poster'
             className='rounded-sm w-full'
           />

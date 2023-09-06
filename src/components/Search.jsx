@@ -21,7 +21,7 @@ function Search() {
   return (
     <>
       <SearchInput input={handleInputChange} category={handleCategoryChange}></SearchInput>
-      {category === 'movie' || category === 'series' ? (
+      {category === 'movie' || category === 'tv' ? (
         <MoviesList input={input} category={category}></MoviesList>
       ) : (
         <PeopleList input={input}></PeopleList>

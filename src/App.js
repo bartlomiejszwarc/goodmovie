@@ -7,6 +7,7 @@ import { Route, Routes } from 'react-router-dom';
 import Search from './components/Search';
 import Navbar from './components/Navbar';
 import WelcomePage from './components/WelcomePage';
+import TvSeriesSeasonDetails from './components/TvSeriesSeasonDetails';
 
 function App() {
   return (
@@ -19,6 +20,10 @@ function App() {
         <Route path='/movie/details/:id' element={<MovieDetails />}></Route>
         <Route path='/tv/details/:id' element={<TvSeriesDetails />}></Route>
         <Route path='/person/details/:id' element={<PersonDetails />}></Route>
+        <Route
+          path='/tv/:series_id/season/:season_number'
+          element={<TvSeriesSeasonDetails />}
+        ></Route>
       </Routes>
     </div>
   );

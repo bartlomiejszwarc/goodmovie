@@ -83,9 +83,9 @@ function PersonDetails() {
                   className='w-60'
                 />
               ) : (
-                <img src={'/unknown_person.png'} alt='' className='w-full' />
+                <img src={'/unknown_person.png'} alt='' className='w-60' />
               )}
-              <div className='flex flex-col pb-4'>
+              <div className='flex flex-col pb-4 w-60'>
                 <span className='font-medium text-slate-100 text-3xl'>{person?.name}</span>
               </div>
               <div className='flex flex-col space-y-3'>
@@ -108,19 +108,30 @@ function PersonDetails() {
                 </div>
                 <div className='flex flex-col'>
                   <span className='text-slate-100 font-medium text-base'>Birthday</span>
-                  <span className='text-slate-100 text-base'>{person?.birthday}</span>
+                  {person?.birthday ? (
+                    <span className='text-slate-100 text-base'>{person?.birthday}</span>
+                  ) : (
+                    <span className='text-slate-100 text-base'>Unknown</span>
+                  )}
                 </div>
                 <div className='flex flex-col'>
                   <span className='text-slate-100 font-medium text-base'>Place of Birth</span>
-                  <span className='text-slate-100 text-base'>{person?.place_of_birth}</span>
+                  {person?.place_of_birth ? (
+                    <span className='text-slate-100 text-base'>{person?.place_of_birth}</span>
+                  ) : (
+                    <span className='text-slate-100 text-base'>Unknown</span>
+                  )}
                 </div>
               </div>
             </div>
             <div className='w-full md:w-3/5 flex flex-col bg-transparent text-slate-50 pt-4 md:pt-0 space-y-4'>
-              <div className='flex flex-col'>
-                <span className='text-slate-100 text-2xl'>Bio</span>
-                <span className='text-slate-100 text-base'>{person?.biography}</span>
-              </div>
+              {person?.biography ? (
+                <div className='flex flex-col'>
+                  <span className='text-slate-100 text-2xl'>Bio</span>
+                  <span className='text-slate-100 text-base'>{person?.biography}</span>
+                </div>
+              ) : null}
+
               <div className='w-full space-y-2'>
                 <span className='text-xl text-slate-100 font-medium'>Known for </span>
 

@@ -95,7 +95,7 @@ function PersonDetails() {
     return (
       <>
         <div className='w-full'>
-          <div className=' px-16 py-6 min-h-screen flex flex-col md:flex-row justify-center md:space-x-8 rounded-lg'>
+          <div className=' px-6 md:px-16 min-h-screen flex flex-col md:flex-row justify-center md:space-x-8 rounded-lg'>
             <div className='flex flex-col'>
               {person?.profile_path ? (
                 <img

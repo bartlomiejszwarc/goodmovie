@@ -78,7 +78,7 @@ function MovieDetails() {
       <>
         <div className='w-full'>
           <div
-            className='px-16 py-6 min-h-screen flex flex-col lg:flex-col items-center justify-center lg:space-x-8 space-y-10'
+            className='px-6 md:px-16 min-h-screen flex flex-col lg:flex-col items-center justify-center lg:space-x-8 space-y-10'
             style={{
               backgroundImage: `linear-gradient(223deg, rgba(10, 0, 0, 0.90), rgba(0, 0, 10, 0.90)), url(https://image.tmdb.org/t/p/original/${movie?.backdrop_path})`,
               backgroundSize: 'cover',

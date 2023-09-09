@@ -33,7 +33,9 @@ function TvSeriesSeasons({ series, seasons }) {
           >
             <div className='flex flex-row items-center space-x-2'>
               <span className='text-xl text-neutral-100'>{season?.name} </span>
-              <span className='text-base text-neutral-500'>({season?.air_date?.slice(0, 4)})</span>
+              <span className='text-base text-neutral-500'>
+                {season?.air_date ? season?.air_date?.slice(0, 4) : null}
+              </span>
             </div>
           </AccordionSummary>
           <AccordionDetails className='bg-transparent bg-opacity-90 text-slate-100'>

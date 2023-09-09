@@ -6,14 +6,25 @@ import { MoreVert } from '@mui/icons-material';
 function PersonDetails() {
   const { id } = useParams();
   const [person, setPerson] = useState();
-  const [personCredits, setPersonCredits] = useState();
+  const [personCredits, setPersonCredits] = useState([]);
   const [isLoaded, setIsLoaded] = useState();
   const [isFound, setIsFound] = useState();
 
   useEffect(() => {
     getPersonDetails(id);
-    getPersonCredits(id);
+    const fetchData = async () => {
+      await getPersonCredits(id, 'movie_credits', 'movie');
+      await getPersonCredits(id, 'tv_credits', 'tv');
+    };
+    fetchData();
   }, []);
+
+  useEffect(() => {
+    if (person?.name) {
+      const title = person?.name;
+      document.title = title;
+    }
+  }, [person]);
 
   async function getPersonDetails(id) {
     try {
@@ -42,7 +53,7 @@ function PersonDetails() {
       console.log(e);
     }
   }
-  async function getPersonCredits(id) {
+  async function getPersonCredits(id, creditsType, type) {
     try {
       const options = {
         method: 'GET',
@@ -51,10 +62,20 @@ function PersonDetails() {
           Authorization: process.env.REACT_APP_API_KEY,
         },
       };
-      fetch(`https://api.themoviedb.org/3/person/${id}/movie_credits`, options)
+      fetch(`https://api.themoviedb.org/3/person/${id}/${creditsType}`, options)
         .then((response) => response.json())
         .then((response) => {
-          setPersonCredits(response.cast.slice(0, 10));
+          const newCredits = response.cast.map((credits) => ({
+            ...credits,
+            type: type,
+          }));
+          setPersonCredits((credits) => {
+            const mergedCredits = [...credits, ...newCredits];
+            const filteredCredits = mergedCredits.filter((credit) => credit.vote_count >= 100);
+            const sortedCredits = filteredCredits.sort((a, b) => b.vote_average - a.vote_average);
+            return sortedCredits;
+          });
+
           setIsLoaded(true);
           if (response.success === false) {
             setIsFound(false);
@@ -122,23 +143,33 @@ function PersonDetails() {
                     <span className='text-slate-100 text-base'>Unknown</span>
                   )}
                 </div>
+                {person?.deathday ? (
+                  <div className='flex flex-col'>
+                    <span className='text-slate-100 font-medium text-base'>Death</span>
+                    {person?.deathday ? (
+                      <span className='text-slate-100 text-base'>{person?.deathday}</span>
+                    ) : (
+                      <span className='text-slate-100 text-base'>Unknown</span>
+                    )}
+                  </div>
+                ) : null}
               </div>
             </div>
             <div className='w-full md:w-3/5 flex flex-col bg-transparent text-slate-50 pt-4 md:pt-0 space-y-4'>
               {person?.biography ? (
                 <div className='flex flex-col'>
-                  <span className='text-slate-100 text-2xl'>Bio</span>
+                  <span className='text-2xl md:text-3xl text-slate-100 font-medium'>Biography</span>
                   <span className='text-slate-100 text-base'>{person?.biography}</span>
                 </div>
               ) : null}
 
               <div className='w-full space-y-2'>
-                <span className='text-xl text-slate-100 font-medium'>Known for </span>
+                <span className='text-2xl md:text-3xl text-slate-100 font-medium'>Known for </span>
 
                 <HorizontalList
-                  items={personCredits}
+                  items={personCredits.slice(0, 15)}
                   width={'full'}
-                  renderItem={(movie) => <MovieCard movie={movie} />}
+                  renderItem={(movie) => <MovieCard movie={movie} type={movie?.type} />}
                 />
               </div>
             </div>

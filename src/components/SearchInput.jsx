@@ -11,10 +11,6 @@ function SearchInput({ input, category }) {
   const [searchKeyword, setSearchKeyword] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
 
-  useEffect(() => {}, [searchInput]);
-  useEffect(() => {}, [searchKeyword]);
-  useEffect(() => {}, [selectedCategory]);
-
   const handleInputSubmit = () => {
     setSearchKeyword(searchInput);
     input(searchInput);

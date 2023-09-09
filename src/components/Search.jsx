@@ -7,9 +7,10 @@ function Search() {
   const [input, setInput] = useState('');
   const [category, setCategory] = useState('movie');
 
-  useEffect(() => {}, [input]);
-
-  useEffect(() => {}, [category]);
+  useEffect(() => {
+    const title = 'Search';
+    document.title = title;
+  }, []);
 
   const handleInputChange = (newInput) => {
     setInput(newInput);

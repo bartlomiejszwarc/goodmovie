@@ -39,7 +39,10 @@ function TvSeriesSeasons({ series, seasons }) {
           <AccordionDetails className='bg-transparent bg-opacity-90 text-slate-100'>
             <p className='text-neutral-400'>{season?.episode_count} episodes </p>
             <p className='pb-2'>
-              {season?.overview?.split('.').filter(Boolean).slice(0, 3).join('.')}.
+              {season?.overview
+                ? season?.overview?.split('.').filter(Boolean).slice(0, 3).join('.')
+                : null}
+              .
             </p>
             <Link to={`/tv/${series?.id}/season/${season?.season_number}`}>
               <span className='border-b-[1px] border-neutral-500'>

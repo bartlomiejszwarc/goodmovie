@@ -12,12 +12,24 @@ function TvSeriesSeasonDetails() {
   const [season, setSeason] = useState();
   const [series, setSeries] = useState();
   const [isLoading, setIsLoading] = useState();
-  const [isLoaded, setIsLoaded] = useState();
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     getSeasonDetails();
     getSeriesDetails();
   }, []);
+
+  useEffect(() => {
+    if (series?.name) {
+      const title =
+        series?.name +
+        (season?.air_date ? ` (${season?.air_date.slice(0, 4)})` : '') +
+        ' / ' +
+        season?.name;
+      document.title = title;
+    }
+  }, [series, season]);
+
   async function getSeriesDetails() {
     try {
       const options = {
@@ -70,8 +82,15 @@ function TvSeriesSeasonDetails() {
     return (
       <>
         <div className='w-full'>
+          <div className='flex flex-row justify-start items-center pt-4 pl-4'>
+            <Link to={`/tv/details/${series_id}`}>
+              <span className='text-white font-medium text-base md:text-xl'>
+                <ChevronLeftIcon /> Go back to TV Series page
+              </span>
+            </Link>
+          </div>
           <div
-            className='px-16 py-6 min-h-screen flex flex-col lg:flex-col items-center justify-center lg:space-x-8 rounded-lg space-y-10'
+            className='px-16 py-6 min-h-screen flex flex-col lg:flex-col items-center justify-center lg:space-x-8 space-y-10'
             style={{
               backgroundImage: `linear-gradient(223deg, rgba(10, 0, 0, 0.90), rgba(0, 0, 10, 0.90)), url(https://image.tmdb.org/t/p/original/${series?.backdrop_path})`,
               backgroundSize: 'cover',
@@ -81,13 +100,6 @@ function TvSeriesSeasonDetails() {
             }}
           >
             <div className=' flex flex-col md:flex-row justify-center'>
-              <div className='flex flex-row justify-start items-center'>
-                <Link to={`/tv/details/${series_id}`}>
-                  <span className='text-white font-medium text-base md:text-xl'>
-                    <ChevronLeftIcon /> Go back to TV Series page
-                  </span>
-                </Link>
-              </div>
               <div className=''>
                 <img
                   src={'https://image.tmdb.org/t/p/w400/' + season?.poster_path}

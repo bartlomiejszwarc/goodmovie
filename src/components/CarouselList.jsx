@@ -38,33 +38,38 @@ function CarouselList({ items, label, category }) {
 
   return (
     <>
+      <span className='text-2xl md:text-4xl text-slate-100 pl-8 tracking-wide font-bebas pt-8'>
+        {label}
+      </span>
       <div className='relative w-full'>
         <button
           onClick={() => scrollTo(-scrollSpeed)}
-          className='bg-transparent flex items-center justify-start absolute w-12 top-0 h-full cursor-pointer background-gradient-shade-left'
+          className={`bg-transparent flex items-center justify-start absolute w-16 top-0 left-0 h-full cursor-pointer background-gradient-shade-left ${
+            isAtStart ? 'text-transparent' : 'text-slate-400'
+          }`}
         >
-          <ArrowBackIosNewIcon className='text-neutral-400' />
+          <ArrowBackIosNewIcon />
         </button>
-        <span className='text-2xl md:text-4xl text-slate-100 pl-8 tracking-wide font-bebas'>
-          {label}
-        </span>
+
         <div
-          className='flex flex-row custom-scrollbar pt-2 pb-8'
+          className='flex flex-row space-x-3 custom-scrollbar'
           ref={scrollContainerRef}
           onScroll={handleScroll}
           style={{ overflowX: 'scroll' }}
         >
           {items?.map((movie, key) => (
-            <div key={key}>
+            <div key={key} className=''>
               <MovieTile movie={movie} category={category} posterOnly={true}></MovieTile>
             </div>
           ))}
         </div>
         <button
           onClick={() => scrollTo(scrollSpeed)}
-          className='bg-transparent flex items-center justify-end absolute w-12 top-0 right-0 h-full cursor-pointer background-gradient-shade-right '
+          className={`bg-transparent flex items-center justify-end absolute w-16 top-0 right-0 h-full cursor-pointer background-gradient-shade-right ${
+            isAtEnd ? 'text-transparent' : 'text-slate-400'
+          } `}
         >
-          <ArrowForwardIosIcon className='text-neutral-400' />
+          <ArrowForwardIosIcon />
         </button>
       </div>
     </>

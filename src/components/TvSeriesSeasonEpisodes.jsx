@@ -37,13 +37,17 @@ function TvSeriesSeasonEpisodes({ episodes }) {
               <div className='flex flex-row items-center space-x-2'>
                 <span className='text-xl text-neutral-100'>{episode?.name} </span>
                 <span className='text-sm text-neutral-400 pt-[3px]'>
-                  {' '}
-                  E{episode?.episode_number} S{episode?.season_number}
+                  {episode?.episode_number ? ` E${episode?.episode_number}` : null}
+                  {episode?.season_number ? `S${episode?.season_number}` : null}
                 </span>
               </div>
             </AccordionSummary>
             <AccordionDetails className='bg-transparent bg-opacity-90 text-slate-100 flex flex-col space-y-2'>
-              <span className='text-neutral-400'>{episode?.runtime}m</span>
+              <span className='text-neutral-400'>
+                {episode?.runtime > 0
+                  ? `${Math.floor(episode?.runtime / 60)}h ${episode?.runtime % 60}m`
+                  : null}
+              </span>
               <p className=''>
                 {episode?.overview?.split('.').filter(Boolean).slice(0, 3).join('.')}
               </p>

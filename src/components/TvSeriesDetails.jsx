@@ -19,6 +19,14 @@ function TvSeriesDetails() {
     getSeriesProviders(id, 'PL');
   }, [isFound, isLoaded]);
 
+  useEffect(() => {
+    if (series?.name) {
+      const title =
+        series?.name + (series.first_air_date ? ` (${series.first_air_date.slice(0, 4)})` : '');
+      document.title = title;
+    }
+  }, [series]);
+
   async function getSeriesProviders(id, region) {
     try {
       const options = {
@@ -103,7 +111,7 @@ function TvSeriesDetails() {
               width: '100%',
             }}
           >
-            <div className=' flex flex-col md:flex-row justify-center'>
+            <div className=' flex flex-col md:flex-row justify-start w-full lg:w-3/5'>
               <div className=''>
                 {series?.seasons[series?.seasons.length - 1]?.poster_path ? (
                   <img
@@ -125,8 +133,8 @@ function TvSeriesDetails() {
               <div className='w-full lg:w-1/2 flex flex-col bg-transparent text-slate-50 pt-4 md:p-4 space-y-4'>
                 <div className='flex flex-col'>
                   <span className='text-slate-300'> {series?.first_air_date?.slice(0, 4)}</span>{' '}
-                  <span className='font-medium text-3xl'>{series?.name}</span>
-                  <span className='font-medium text-lg'>
+                  <span className='font-medium text-3xl tracking-tighter'>{series?.name}</span>
+                  <span className='font-medium text-lg tracking-tight'>
                     {series?.production_companies[0]?.name}
                   </span>
                   <Rating defaultValue={series?.vote_average / 2} precision={0.1} readOnly />
@@ -165,20 +173,26 @@ function TvSeriesDetails() {
                     </div>
                   ))}
                 </div>
-                <span className='font-thin text-xl text-justify'>{series?.overview}</span>
               </div>
             </div>
-            <span className='text-xl text-slate-100 font-medium'>Top paid cast</span>
+            <div className='flex flex-col md:flex-row w-full lg:w-3/5'>
+              <span className='font-thin text-xl text-justify text-slate-100'>
+                {series?.overview}
+              </span>
+            </div>
+            {cast.length > 0 ? (
+              <>
+                <span className='text-xl text-slate-100 font-medium'>Top paid cast</span>
 
-            <HorizontalList
-              width={'3/5'}
-              items={cast}
-              renderItem={(person) => <PersonCard person={person} />}
-            />
-            <TvSeriesSeasons
-              series={series}
-              seasons={series?.seasons?.slice(1, series?.seasons?.length)}
-            />
+                <HorizontalList
+                  width={'3/5'}
+                  items={cast}
+                  renderItem={(person) => <PersonCard person={person} />}
+                />
+              </>
+            ) : null}
+
+            <TvSeriesSeasons series={series} seasons={series?.seasons} />
           </div>
         </div>
       </>

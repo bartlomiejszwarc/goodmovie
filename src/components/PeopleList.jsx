@@ -43,7 +43,8 @@ function PeopleList({ input }) {
       )
         .then((response) => response.json())
         .then((response) => {
-          setPeople(response.results);
+          const sorted = response.results.sort((a, b) => b.popularity - a.popularity);
+          setPeople(sorted);
           setIsLoading(false);
         })
 
@@ -54,6 +55,7 @@ function PeopleList({ input }) {
   }
   function loadMoreData() {
     setPageNumber((pageNumber) => pageNumber + 1);
+    window.scrollTo({ top: 0, left: 0 });
   }
 
   return (

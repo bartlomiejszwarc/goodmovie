@@ -16,6 +16,7 @@ function WelcomePage() {
     getUpcomingMovies();
     getTopRatedMovies();
     getTrendingTvSeries();
+    document.title = 'Discover';
   }, []);
   async function getTrendingMovies() {
     try {
@@ -46,7 +47,7 @@ function WelcomePage() {
           Authorization: process.env.REACT_APP_API_KEY,
         },
       };
-      fetch('https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=1&region=PL', options)
+      fetch('https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=1&region=GB', options)
         .then((response) => response.json())
         .then((response) => {
           setUpcomingMovies(response.results);
@@ -104,7 +105,7 @@ function WelcomePage() {
   return (
     <>
       {!isLoading && isLoaded ? (
-        <>
+        <div className='w-full flex flex-col pb-8'>
           <CarouselList items={popularMovies} label={'Popular movies'} category={'movie'} />
           <CarouselList items={upcomingMovies} label={'Upcoming movies'} category={'movie'} />
           <CarouselList
@@ -113,7 +114,7 @@ function WelcomePage() {
             category={'movie'}
           />
           <CarouselList items={popularTvSeries} label={'Top rated TV Shows'} category={'tv'} />
-        </>
+        </div>
       ) : isLoading && !isLoaded ? (
         <Box sx={{ display: 'flex' }}>
           <CircularProgress size={80} style={{ color: '#0c4a6e' }} />

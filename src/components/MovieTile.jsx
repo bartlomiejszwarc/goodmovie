@@ -57,7 +57,7 @@ function MovieTile({ movie, category, posterOnly }) {
     return (
       <>
         <Link to={`/${category}/details/${movie?.id}`}>
-          <div className='flex flex-row bg-transparent px-2'>
+          <div className='flex flex-row bg-transparent'>
             <div className='w-36 md:w-44 lg:w-64'>
               {movie.poster_path ? (
                 <img
